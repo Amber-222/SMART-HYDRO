@@ -1,3 +1,8 @@
+#include <WiFiEsp.h>
+#include <WiFiEspClient.h>
+#include <WiFiEspServer.h>
+#include <WiFiEspUdp.h>
+
 #include <SPI.h> //enables communication betwen wifi module and arduino 
 #include <WiFiEsp.h> //enables wifi comms
 #include <WiFiEspClient.h> //sets up communication line to a user 
@@ -124,7 +129,7 @@ void setup() {
 void loop() {
   WiFiEspClient client = server.available();  // Check if a client has connected
   //read all the measurements on each of the sensors
-  temperature = dht.readTemperature(); //might hard code to 25
+  temperature = dht.readTemperature(); 
   humidity = dht.readHumidity();
   lightLevel = getLightLevel();
   ecLevel = getEC();

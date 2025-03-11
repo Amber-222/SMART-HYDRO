@@ -124,7 +124,7 @@ void setup() {
 void loop() {
   WiFiEspClient client = server.available();  // Check if a client has connected
   //read all the measurements on each of the sensors
-  temperature = dht.readTemperature(); 
+  temperature = dht.readTemperature(); //might hard code to 25
   humidity = dht.readHumidity();
   lightLevel = getLightLevel();
   ecLevel = getEC();

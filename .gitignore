@@ -1,0 +1,39 @@
+# Compiled binary files
+*.elf
+*.hex
+*.bin
+*.eep
+
+# Arduino build files
+/build/
+*.o
+*.d
+*.a
+*.lst
+
+# Temporary and backup files
+*.bak
+*.tmp
+*.log
+
+# Arduino IDE specific files
+*.cpp.pro
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+desktop.ini
+
+# VS Code files
+.vscode/
+
+# JetBrains IDEs (CLion, etc.)
+.idea/
+
+# PlatformIO (if applicable)
+.pio/
+.pioenvs/
+.piolibdeps/
+*.ini.save

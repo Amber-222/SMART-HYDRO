@@ -54,6 +54,10 @@ const unsigned long PUMP_INTERVAL = 5000; //pump runs for 5 seconds before it sh
 const unsigned long EIGHT_HR = 28800000; //control lights cycles
 const unsigned long FOUR_HR = 14400000; //control off cycle of lights
 
+//constants for pump timer
+const unsigned long QUATER_HR = 900000; //control pump on 
+const unsigned long FIVE_THREEQUATER_HR = 20700000; //control pump off 
+
 DFRobot_EC10 ec;
 auto timer = timer_create_default();
 float temperature;
@@ -123,6 +127,7 @@ void setup() {
   timer.every(SIXTEEN_HR, estimatePH);
 
   toggleLightOn(); 
+  togglePumpOn();
 }
 
 
@@ -403,5 +408,14 @@ void toggleLightOff() {
   timer.in(FOUR_HR, toggleLightOn);
 }
 
+//methods to toggle pump on and off with a timer
+void togglePumpOn() {
+  togglePin(PUMP_PIN, LOW);
+  timer.in(QUATER_HR, togglePumpOff);
+}
 
+void togglePumpOff() {
+  togglePin(PUMP_PIN, HIGH);
+  timer.in(FIVE_THREEQUATER_HR, togglePumpOn);
+}
 

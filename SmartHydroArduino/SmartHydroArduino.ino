@@ -13,7 +13,7 @@
 #include <arduino-timer.h> //manages timed events
 
 //WiFi network settings
-char ssid[] = "SmartHydro1";       // network SSID (name). 8 or more characters
+char ssid[] = "SmartHydro2";       // network SSID (name). 8 or more characters
 char password[] = "Password123";  // network password. 8 or more characters
 String message = "";
 
@@ -33,9 +33,9 @@ RingBuffer buf(16); //to process incoming data for web api
 //set up for pins that components connect to for measuring and reading their values
 #define FLOW_PIN 2
 #define LIGHT_PIN A7
-#define EC_PIN A8
+#define EC_PIN A10 //Had to change for SmartHydro Box2
 #define PH_PIN A9
-#define DHTTYPE DHT22
+#define DHTTYPE DHT11 //Had to Change
 #define LED_PIN 4
 #define FAN_PIN 5
 #define PUMP_PIN 6
@@ -53,6 +53,10 @@ const unsigned long SIXTEEN_HR = 57600000; //sixteen hour interval to check ec a
 const unsigned long PUMP_INTERVAL = 5000; //pump runs for 5 seconds before it shuts down
 const unsigned long EIGHT_HR = 28800000; //control lights cycles
 const unsigned long FOUR_HR = 14400000; //control off cycle of lights
+
+//constants for pump timer
+const unsigned long QUATER_HR = 60000; //control pump on (on for 1 minute)
+const unsigned long FIVE_THREEQUATER_HR = 10800000; //control pump off (off for 3 hours)
 
 DFRobot_EC10 ec;
 auto timer = timer_create_default();
@@ -123,6 +127,7 @@ void setup() {
   timer.every(SIXTEEN_HR, estimatePH);
 
   toggleLightOn(); 
+  togglePumpOn();
 }
 
 
@@ -401,6 +406,17 @@ void toggleLightOn() {
 void toggleLightOff() {
   togglePin(LED_PIN, HIGH);
   timer.in(FOUR_HR, toggleLightOn);
+}
+
+//methods to toggle pump on and off with a timer
+void togglePumpOn() {
+  togglePin(PUMP_PIN, LOW);
+  timer.in(QUATER_HR, togglePumpOff);
+}
+
+void togglePumpOff() {
+  togglePin(PUMP_PIN, HIGH);
+  timer.in(FIVE_THREEQUATER_HR, togglePumpOn);
 }
 
 
